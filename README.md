@@ -2,6 +2,8 @@
 
 A simple, interactive offensive line playbook for kids.
 
+[Open the playbook](https://lespaui.github.io/mutts-kids-oline-playbook/)
+
 ## Play groups
 
 - Middle and inside runs: 20, 21, 22, 23.
