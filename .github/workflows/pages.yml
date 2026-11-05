@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v7.0.1
+      - name: Check playbook rules
+        run: node scripts/check-playbook.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v6.0.0
       - name: Prepare static files
