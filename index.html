@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mutts Kids O-line Playbook</title>
+<style>
+:root{color-scheme:light;--ink:#193a32;--muted:#576861;--paper:#f7f6ee;--card:#fff;--line:#d8e0d9;--block:#117a68;--man:#3565b0;--center:#8056a6;--mike:#a86305;--rush:#bb433e;--run:#172e29}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.5}main{max-width:1120px;margin:auto;padding:26px 24px 46px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px}.eyebrow{font-size:12px;font-weight:750;letter-spacing:.15em;color:var(--muted)}h1{font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.04em;margin:5px 0 8px}header p{margin:0;color:var(--muted)}button,select{font:inherit}button{cursor:pointer;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:9px 15px;background:#fff;color:var(--ink);font-weight:650}button:hover{background:#eaf2ec}button:focus-visible,select:focus-visible,[role=button]:focus-visible{outline:3px solid #cf930d;outline-offset:3px}button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}.controls{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:18px}.control-label{display:block;font-size:13px;font-weight:750;margin:0 0 7px;color:var(--muted)}.play-buttons{display:flex;flex-wrap:wrap;gap:7px}.play-button{padding:7px 14px;min-width:54px;font-size:20px}.play-button small{font-size:11px;display:block;font-weight:600}.front-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.front-row label{flex:1;min-width:180px}select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:9px 34px 9px 12px;background:#fff;color:var(--ink)}.play{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}.play-heading{padding:20px 24px 14px;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line)}.play-heading h2{font-size:27px;line-height:1.2;margin:0;letter-spacing:-.025em}.play-heading p{font-size:14px;margin:4px 0 0;color:var(--muted)}.direction{font-size:16px;font-weight:800;white-space:nowrap;background:#e5f0e8;padding:8px 13px;border-radius:9px}.diagram{max-width:880px;margin:auto}.diagram svg{display:block;width:100%;height:auto;overflow:visible}.diagram text{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.player{cursor:pointer}.player:focus{outline:none}.player:focus .player-shape{stroke:#d18b08;stroke-width:5}.player.selected .player-shape{stroke:#d18b08;stroke-width:5}.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 24px 22px}.key{border-top:3px solid #d9e9dd;padding-top:10px;font-weight:650}.key span{display:block;font-size:11px;letter-spacing:.12em;color:var(--muted);font-weight:750;margin-bottom:4px}.job{padding:13px 24px;background:#eff5ef;min-height:52px;border-top:1px solid var(--line);font-weight:600}.legend{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:var(--muted);margin:13px 2px}.legend strong{color:var(--ink)}.legend .dot{display:inline-block;width:15px;height:15px;border:2px solid var(--mike);border-radius:50%;vertical-align:-3px;background:#fff2ca;margin-right:5px}.tip{font-weight:600;font-size:14px;margin:14px 0 20px}details{margin-top:24px;padding-top:17px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}summary{cursor:pointer;color:var(--ink);font-weight:700}details p{max-width:850px}details ul{padding-left:20px}details li{margin-bottom:6px}.codes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 16px;margin:16px 0}.codes div{display:flex;gap:12px}.codes strong{color:var(--ink);min-width:52px}#print-book{display:none}.print-source{font-size:11px;color:var(--muted);margin-top:12px}[hidden]{display:none!important}@media(max-width:650px){main{padding:17px 12px 30px}header{align-items:flex-start}header button{padding:8px 10px;font-size:13px}.controls{grid-template-columns:1fr}.play-heading{padding:16px;gap:8px}.play-heading h2{font-size:22px}.direction{font-size:13px}.keys{padding:0 16px 18px;gap:10px}.key{font-size:14px}.job{padding:12px 16px;font-size:14px}.legend{font-size:12px;gap:8px 12px}.play-button{min-width:48px;padding:7px 11px}.tip{font-size:13px}}@media print{@page{size:A4 portrait;margin:12mm}body{background:white}main{padding:0;max-width:none}header,.controls,.front-row,.legend,.tip,details,.job{display:none!important}.play{border:0;border-radius:0;break-inside:avoid}.play-heading{padding:0 0 10px}.diagram{max-width:760px}.keys{padding:0 0 12px}.book-print #app{display:none}.book-print #print-book{display:block}.print-page{break-after:page}.print-page:last-child{break-after:auto}.print-page .play{display:block}.print-page .play-heading{display:flex}.print-page .job{display:none!important}.print-page .print-source{display:block}}
+
+main{max-width:1600px}.controls{grid-template-columns:1.25fr 1fr auto;gap:24px}.pressure-row{max-width:430px;margin-bottom:18px}.looks-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.play-page>.play-heading{padding:16px 0 18px;border-bottom:0}.play-heading h2{font-size:32px}.play-page>.keys{padding:0 0 20px}.front-heading{padding:16px 18px 0}.front-heading h3{font-size:19px;line-height:1.3;margin:0}.front-heading p{font-size:14px;color:var(--muted);margin:5px 0 0}.job{padding:12px 16px;font-size:14px;min-height:68px}.page-key{font-size:12px;color:var(--muted);margin:12px 0}.legend{display:none}.print-source{font-size:12px}.keys .key:last-child{border-color:#d5d0df}
+@media(max-width:1000px){.looks-grid{grid-template-columns:1fr}.diagram{max-width:720px}.controls{grid-template-columns:1fr 1fr}.controls>div:last-child{grid-column:1/-1}.job{min-height:0}}
+@media(max-width:650px){.controls{grid-template-columns:1fr;gap:16px}.play-page>.play-heading{padding:12px 0 18px}.play-heading h2{font-size:25px}.front-heading h3{font-size:20px}.page-key{font-size:12px}}
+@media print{@page{size:A4 landscape;margin:10mm}main{max-width:none}header,.controls,.pressure-row,.tip,details,.job,main>.print-source{display:none!important}.play-page{break-inside:avoid}.play-page>.play-heading{display:flex;padding:0 0 10px}.play-heading h2{font-size:26px}.play-heading p{font-size:12px}.looks-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.play{border:1px solid #d8e0d9;border-radius:10px}.front-heading{padding:10px 10px 0}.front-heading h3{font-size:16px}.front-heading p{font-size:11px}.play-page>.keys{display:grid;padding:0 0 14px;gap:16px}.key{font-size:14px}.key span{font-size:10px}.page-key{font-size:10px;margin:9px 0}.print-page{break-after:page}.print-page:last-child{break-after:auto}.book-print #print-book{display:block}.book-print #app{display:none}}
+</style>
+</head>
+<body>
+<main id="app">
+<header><div><div class="eyebrow">MUTTS · KIDS O-LINE</div><h1>One play. One job.</h1><p>Pick a play. See every front. Find <strong>M</strong>.</p></div><button id="print-current" type="button">Print this page</button></header>
+<div class="controls">
+ <div><span class="control-label">MIDDLE &amp; INSIDE RUNS</span><div class="play-buttons" id="inside-buttons" aria-label="Middle and inside runs"></div></div>
+ <div><span class="control-label">OUTSIDE &amp; STRETCH RUNS</span><div class="play-buttons" id="outside-buttons" aria-label="Outside and stretch runs"></div></div>
+ <div><span class="control-label">PASS</span><div class="play-buttons" id="pass-buttons" aria-label="Pass protection"></div></div>
+</div>
+<div class="pressure-row" id="pressure-control" hidden>
+ <label><span class="control-label">PRESSURE · SHOWN AGAINST ALL THREE FRONTS</span><select id="pressure"><option value="base">Base · read the linebackers</option><option value="mike">Mike blitz</option><option value="back">Backside blitz</option></select></label>
+</div>
+<p class="tip" id="top-tip">20 goes straight through the CENTER. 21 goes LEFT A-gap. 22 goes RIGHT A-gap.</p>
+<div id="look" aria-live="polite"></div>
+<div class="legend"><span><i class="dot"></i><strong>M = Mike</strong></span><span><strong>⊥</strong> Block</span><span><strong>Dashed line</strong> Read / help then climb</span><span><strong>Thick arrow</strong> HB path</span><span><strong>Red arrow</strong> Blitz</span></div>
+<p class="print-source">N = nose · E/T = defensive line · B/O = other linebackers · H = edge help</p>
+<details>
+ <summary>Coach notes &amp; all play numbers</summary>
+ <div class="codes"><div><strong>20</strong> Straight through center</div><div><strong>21</strong> Between C and LG</div><div><strong>22</strong> Between C and RG</div><div><strong>23</strong> Inside zone left</div><div><strong>24 / 25</strong> Outside zone right / left</div><div><strong>26</strong> Stretch right</div><div><strong>60 / 61</strong> Half-slide right / left</div></div>
+ <p><strong>Mike:</strong> the declared protection reference, usually the middle linebacker or the likely blitzer. These pass examples place Mike toward the called slide. Confirm the call; do not change direction silently.</p>
+ <p><strong>Center in pass protection:</strong> an NT on C is the first job. With no NT, C is the middle blitz picker. A 3–4 normally has a nose. The 4–3 example here uses two 3-technique tackles and no nose; a different 4–3 alignment may put a nose back on C.</p>
+ <p><strong>Run combos:</strong> ACE = center + guard; DEUCE = guard + tackle. Both secure the down lineman first. The helper climbs only when the partner controls him. The run examples are teaching fits. 20 goes directly through center; 21 hits the left A-gap between C and LG; 22 hits the right A-gap between C and RG. 23 keeps its inside-zone-left landmark. 24/25 aim outside the tackle, and 26 stretches wider to the edge. These landmarks follow the coach’s instructions.</p>
+ <p><strong>H = edge help:</strong> an additional TE or H-back block is shown in the full 3–4 and 4–3 run looks. This is not a five-blockers-can-block-seven drawing. Assign the remaining formation blocks before using the play. A dangerous backside edge needs a declared answer; the meeting uses CAP or SPLIT. Extra simultaneous blitzers require a protection adjustment or a QB hot answer.</p>
+ <p><strong>Source:</strong> Mutts meeting 10-14.pdf, slides 1–4 (combos), 8–10 (inside zone and backside edge), 11–16 (half-slide), and 17 (outside zone). The play numbers, 26 stretch, center rule, and Mike rule follow the coach’s instructions in this chat. These simplified front examples are adaptations, not copies of every stunt in the meeting.</p>
+ <button type="button" id="print-all">Print all 9 play pages</button>
+</details>
+</main>
+<div id="print-book"></div>
+<script>
+(() => {
+'use strict';
+const plays = [
+ {id:'20',name:'Center dive',kind:'dive',dir:0}, {id:'21',name:'HB dive',kind:'dive',dir:-1},
+ {id:'22',name:'Inside zone',kind:'inside',dir:1}, {id:'23',name:'Inside zone',kind:'inside',dir:-1},
+ {id:'24',name:'Outside zone',kind:'outside',dir:1}, {id:'25',name:'Outside zone',kind:'outside',dir:-1},
+ {id:'26',name:'Stretch',kind:'stretch',dir:1},
+ {id:'60',name:'Half-slide',kind:'pass',dir:1}, {id:'61',name:'Half-slide',kind:'pass',dir:-1}
+];
+const fronts = {nt:'NT core · 5–0–5', '34':'3–4 · odd front', '43':'4–3 · no NT on C'};
+const positions=['LT','LG','C','RG','RT'];
+const ox={LT:170,LG:265,C:360,RG:455,RT:550};
+let state={play:'20',pressure:'base',selected:null};
+const frontOrder=['nt','34','43'];
+const direction=p=>p.dir===0?'MIDDLE':p.dir>0?'RIGHT':'LEFT';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function scene(play,front,pressure){
+ const d=play.dir||1, psG=d>0?'RG':'LG',bsG=d>0?'LG':'RG',psT=d>0?'RT':'LT',bsT=d>0?'LT':'RT';
+ const mx=360+d*48, bx=360-d*48;
+ const defs=front==='43'?
+  [{id:'EL',x:145,y:225,l:'E'},{id:'TL',x:245,y:225,l:'T'},{id:'TR',x:475,y:225,l:'T'},{id:'ER',x:575,y:225,l:'E'},{id:'M',x:mx,y:120,l:'M'},{id:'BL',x:115,y:145,l:'B'},{id:'BR',x:605,y:145,l:'B'}]:
+  [{id:'EL',x:160,y:225,l:'E'},{id:'N',x:360,y:225,l:'N'},{id:'ER',x:560,y:225,l:'E'},{id:'M',x:mx,y:120,l:'M'},{id:'B',x:bx,y:140,l:'B'}];
+ if(front==='34')defs.push({id:'OL',x:80,y:235,l:'O'},{id:'OR',x:640,y:235,l:'O'});
+ const byId=Object.fromEntries(defs.map(x=>[x.id,x]));
+ const sideE=d>0?'ER':'EL',backE=d>0?'EL':'ER',sideT=d>0?'TR':'TL',backT=d>0?'TL':'TR';
+ const sideO=d>0?'OR':'OL',backO=d>0?'OL':'OR',backLB=front==='43'?(d>0?'BL':'BR'):'B';
+ const jobs={},blocks=[],climbs=[],combos=[];
+ const add=(pos,target,type='block',text='')=>{blocks.push({pos,target,type});jobs[pos]=text;};
+ if(play.kind==='pass'){
+  if(front==='43'){
+   add('LT','EL',d<0?'slide':'man','Set back. Block the end.');add('LG','TL',d<0?'slide':'man','Set back. Protect your inside gap. Block T.');
+   add('RG','TR',d>0?'slide':'man','Set back. Protect your inside gap. Block T.');add('RT','ER',d>0?'slide':'man','Set back. Block the end.');
+   add('C','M',pressure==='mike'?'center':'read','No NT: pick up the middle blitz. If clear, help inside.');
+  }else{
+   add('C','N','center','NT first. Keep the middle of the pocket firm.');
+   add(psT,d>0?'ER':'EL','slide','Set back. Protect your gap. Take the end.');
+   add(psG,'M',pressure==='mike'?'slide':'read','Read Mike. Pick him up if he comes. Help inside if clear.');
+   if(front==='34'){
+    add(bsG,backE,'man','Set back. Take the inside down lineman.');
+    add(bsT,backO,pressure==='back'?'man':'read','Watch the outside LB. Block him if he comes.');
+   }else{
+    add(bsG,'B',pressure==='back'?'man':'read','Check inside first. Pick up the inside LB if he comes.');
+    add(bsT,backE,'man','Set back. Block the end.');
+   }
+  }
+  const rbTarget=front==='34'?'B':front==='43'?(d>0?'BL':'BR'):null;
+  const rbX=360-d*150;
+  blocks.push({pos:'HB',target:rbTarget,type:'back',x:rbX});
+  return {defs,byId,jobs,blocks,climbs,combos,rbX,pressure,psG,bsG,psT,bsT,extra:false};
+ }
+ if(front==='nt'){
+  add('C','N','combo','Drive N with your guard. Stay on N.');
+  add(psG,'N','combo','Help C on N. Then block M.');climbs.push({from:'N',to:'M'});combos.push({label:'ACE',x:(360+ox[psG])/2});
+  add(bsG,'B','block','Step to the run. Block the other inside LB.');add('LT','EL','block','Block the end. Keep your feet moving.');add('RT','ER','block','Block the end. Keep your feet moving.');
+ }else if(front==='34'){
+  add('C','N','combo','Work with the backside guard on N. Stay on N.');
+  add(bsG,'N','combo','Help C on N. Then take the other inside LB.');climbs.push({from:'N',to:'B'});combos.push({label:'ACE',x:(360+ox[bsG])/2});
+  add(psG,sideE,'combo','Work with your tackle on E. Then block M.');
+  add(psT,sideE,'combo','Work with your guard on E. Keep E blocked.');climbs.push({from:sideE,to:'M'});combos.push({label:'DEUCE',x:(ox[psG]+ox[psT])/2});
+  add(bsT,backE,'block','Block the backside end.');
+ }else{
+  add('C',sideT,'combo','Help the play-side guard on T. Then block M.');
+  add(psG,sideT,'combo','Work with C on T. Keep T blocked.');climbs.push({from:sideT,to:'M'});combos.push({label:'ACE',x:(360+ox[psG])/2});
+  add(bsG,backT,'block','Block your tackle. Keep your feet moving.');add('LT','EL','block','Block the end.');add('RT','ER','block','Block the end.');
+ }
+ return {defs,byId,jobs,blocks,climbs,combos,pressure:'base',psG,bsG,psT,bsT,extra:front!=='nt',edgeTarget:front==='34'?sideO:(d>0?'BR':'BL')};
+}
+function runRoute(play){
+ const d=play.dir||1;
+ const x=play.id==='20'?360:play.id==='21'?313:play.id==='22'?407:play.kind==='inside'?360+d*140:play.kind==='outside'?360+d*245:360+d*340;
+ const path=play.id==='20'?'M360 500L360 280':['dive','inside'].includes(play.kind)?`M360 500Q${x} 435 ${x} 340L${x} 280`:`M360 500C${360+d*165} 500 ${x} 450 ${x} 340L${x} 280`;
+ return {x,path};
+}
+function diagram(play,front,pressure,uid){
+ const s=scene(play,front,pressure),pass=play.kind==='pass',d=play.dir||1;
+ const colors={block:'#117a68',combo:'#117a68',slide:'#117a68',man:'#3565b0',center:'#8056a6',read:'#8056a6',back:'#687771'};
+ let out=`<svg viewBox="0 0 720 575" role="group" aria-labelledby="${uid}-title ${uid}-desc"><title id="${uid}-title">${esc(play.id+' '+play.name+' '+direction(play).toLowerCase()+' against '+fronts[front])}</title><desc id="${uid}-desc">Offense is at the bottom. M is Mike. Lines with flat ends show blocks. Dashed lines show reads or a climb after a double team. ${pass?(front==='43'?'No NT: center picks middle pressure.':'Center blocks the nose tackle.'):'The thick arrow shows the halfback run path.'}</desc><defs>`;
+ for(const [key,color] of Object.entries(colors))out+=`<marker id="${uid}-cap-${key}" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M6 0V12" stroke="${color}" stroke-width="3"/></marker>`;
+ out+=`<marker id="${uid}-run" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L12 6 0 12Z" fill="#172e29"/></marker><marker id="${uid}-rush" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L12 6 0 12Z" fill="#bb433e"/></marker></defs>`;
+ out+='<path d="M35 305H685" stroke="#abb8ae" stroke-width="1.5" stroke-dasharray="7 7"/><text x="36" y="293" fill="#687771" font-size="17">LOS</text><text x="360" y="47" text-anchor="middle" fill="#687771" font-size="18" letter-spacing="3">DEFENSE</text>';
+ if(pass){
+  const sx=d>0?385:335,ex=d>0?565:155;
+  out+=`<path d="M${sx} 403H${ex}" stroke="#117a68" stroke-width="3" marker-end="url(#${uid}-run)"/><text x="360" y="432" text-anchor="middle" font-size="19" fill="#117a68">SLIDE ${d>0?'RIGHT':'LEFT'}</text>`;
+ }
+ const uses={};
+ for(const b of s.blocks){if(!b.target)continue;uses[b.target]=(uses[b.target]||0)+1;}
+ const seen={};
+ for(const b of s.blocks){
+  const x=b.pos==='HB'?s.rbX:ox[b.pos],y=b.pos==='HB'?488:329;
+  let target=b.target?s.byId[b.target]:{x:360-d*280,y:270};
+  let tx=target.x,ty=target.y+29;
+  if(uses[b.target]>1){seen[b.target]=(seen[b.target]||0)+1;tx+=(seen[b.target]===1?-12:12);}
+  if(b.pos==='HB'&&front==='34'){tx=target.x;ty=target.y+30;}
+  const type=b.type,color=colors[type],dash=['read','back'].includes(type)?'stroke-dasharray="8 7"':'';
+  const cy=b.pos==='HB'?390:285;
+  out+=`<path d="M${x} ${y} Q${x} ${cy} ${tx} ${ty}" fill="none" stroke="${color}" stroke-width="3.5" ${dash} marker-end="url(#${uid}-cap-${type})"/>`;
+ }
+ for(const c of s.climbs){const a=s.byId[c.from],b=s.byId[c.to];out+=`<path d="M${a.x+18*d} ${a.y-28} Q${a.x+52*d} ${b.y+25} ${b.x} ${b.y+29}" fill="none" stroke="#a86305" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#${uid}-cap-center)"/>`;}
+ for(const c of s.combos)out+=`<text x="${c.x}" y="292" text-anchor="middle" font-size="17" font-weight="700" fill="#117a68">${c.label}</text>`;
+ if(s.extra){const x=d>0?665:55,t=s.byId[s.edgeTarget];out+=`<path d="M${x} 329Q${x} 265 ${t.x} ${t.y+28}" fill="none" stroke="#687771" stroke-width="3" marker-end="url(#${uid}-cap-back)"/><circle cx="${x}" cy="355" r="24" fill="#f5f5ef" stroke="#687771" stroke-width="2"/><text x="${x}" y="363" text-anchor="middle" font-size="23" font-weight="700" fill="#576861">H</text>`;}
+ if(pass&&pressure!=='base'){
+  let b;
+  if(pressure==='mike')b=s.byId.M;
+  else b=s.byId[front==='34'?(d>0?'OL':'OR'):front==='43'?(d>0?'BL':'BR'):'B'];
+  const tx=pressure==='mike'?(front==='43'?360+d*20:360+d*90):(front==='34'?360-d*280:360-d*150);
+  out+=`<path d="M${b.x+24*d} ${b.y+18} Q${tx+40*d} 220 ${tx} 310" fill="none" stroke="#bb433e" stroke-width="3.5" stroke-dasharray="8 5" marker-end="url(#${uid}-rush)"/><text x="${tx}" y="283" text-anchor="middle" font-size="17" fill="#bb433e" font-weight="700">BLITZ</text>`;
+ }
+ if(!pass){
+  const route=runRoute(play);
+  out+=`<path data-hb-route="${play.id}" d="${route.path}" fill="none" stroke="#172e29" stroke-width="6" marker-end="url(#${uid}-run)"/>`;
+ }
+ for(const p of s.defs){const m=p.id==='M';out+=`<circle cx="${p.x}" cy="${p.y}" r="25" fill="${m?'#fff0c7':'#fff7f2'}" stroke="${m?'#a86305':'#b45b4e'}" stroke-width="${m?3:2}"/><text x="${p.x}" y="${p.y+8}" text-anchor="middle" font-size="28" font-weight="700" fill="${m?'#8b5000':'#a13f35'}">${p.l}</text>${m?`<text x="${p.x}" y="${p.y-35}" text-anchor="middle" font-size="19" font-weight="750" fill="#8b5000">MIKE</text>`:''}`;}
+ for(const pos of positions){const x=ox[pos],isC=pos==='C';out+=`<g class="player${state.selected===pos?' selected':''}" data-pos="${pos}" role="button" tabindex="0" aria-label="${pos}: ${esc(s.jobs[pos])}">${isC?`<rect class="player-shape" x="${x-27}" y="328" width="54" height="54" rx="5" fill="#8056a6" stroke="#fff" stroke-width="3"/>`:`<circle class="player-shape" cx="${x}" cy="355" r="28" fill="#214c43" stroke="#fff" stroke-width="3"/>`}<text x="${x}" y="363" text-anchor="middle" font-size="28" font-weight="750" fill="#fff">${pos}</text></g>`;}
+ const qy=pass?495:445;
+ out+=`<circle cx="360" cy="${qy}" r="22" fill="#e7ece7" stroke="#8a9b90" stroke-width="2"/><text x="360" y="${qy+7}" text-anchor="middle" font-size="18" font-weight="700" fill="#52665b">Q</text>`;
+ const hx=pass?s.rbX:360,hy=pass?515:525;
+
+ out+=`<circle cx="${hx}" cy="${hy}" r="25" fill="#172e29"/><text x="${hx}" y="${hy+7}" text-anchor="middle" font-size="28" font-weight="750" fill="#fff">HB</text><text x="80" y="553" font-size="17" fill="#687771">← LEFT</text><text x="640" y="553" text-anchor="end" font-size="17" fill="#687771">RIGHT →</text></svg>`;
+ return {svg:out,scene:s};
+}
+function keys(play,front){
+ const dir=play.dir>0?'right':'left';
+ if(play.kind==='pass')return [`Set back. Stay square.`,`Slide ${dir}. Find M.`,front==='43'?'C: pick the middle blitz.':'C: block N first.'];
+ if(play.id==='20')return ['Drive straight ahead.','Secure the block first.','HB: straight through C.'];
+ if(play.id==='21')return ['Drive straight ahead.','One helper takes M.','HB: between C and LG.'];
+ if(play.id==='22')return ['First step right.','Secure, then one climbs.','HB: between C and RG.'];
+ if(play.kind==='inside')return [`First step ${dir}.`,'Secure, then one climbs.','HB: press the inside gap.'];
+ if(play.kind==='outside')return [`Step and reach ${dir}.`,'Keep your feet moving.','HB: outside the tackle.'];
+ return ['Reach right. Keep moving.','Stretch the defense wide.','HB: go to the wide edge.'];
+}
+function card(play,front,pressure,uid,printing=false){
+ const {svg}=diagram(play,front,pressure,uid);
+ const note=play.kind==='pass'?(front==='43'?'C: pick the middle blitz.':'C: block N first.'):(front==='nt'?'Secure the double team.': 'H supplies extra edge help.');
+ return `<article class="play" data-front="${front}"><div class="front-heading"><h3>${fronts[front]}</h3><p>${note}</p></div><div class="diagram">${svg}</div>${printing?'':`<div class="job" id="job-${front}">Tap your spot to see your job.</div>`}</article>`;
+}
+function playPage(play,pressure,uid,printing=false){
+ const k=keys(play,'nt');
+ if(play.kind==='pass')k[2]='C: N first; otherwise middle.';
+ const labels=play.kind==='pass'?['1 · SET','2 · CALL','3 · CENTER']:['1 · FIRST STEP','2 · TEAMWORK','3 · TARGET'];
+ const pressureName={base:'Base read',mike:'Mike blitz',back:'Backside blitz'}[pressure];
+ return `<section class="play-page"><div class="play-heading"><div><h2>${play.id} · ${play.name}</h2><p>All three defensive looks${play.kind==='pass'?' · '+pressureName:''}</p></div><div class="direction">${play.dir===0?'↑ MIDDLE':play.dir>0?'RIGHT →':'← LEFT'}</div></div><div class="keys">${k.map((v,i)=>`<div class="key"><span>${labels[i]}</span>${v}</div>`).join('')}</div><div class="looks-grid">${frontOrder.map(f=>card(play,f,pressure,uid+'-'+f,printing)).join('')}</div><p class="page-key">M = Mike · flat end = block · dashed = read / help then climb · thick arrow = HB · H = extra edge help</p></section>`;
+}
+function render(){
+ const p=plays.find(x=>x.id===state.play);
+ $('look').innerHTML=playPage(p,state.pressure,'current');
+ $('pressure-control').hidden=p.kind!=='pass';
+ $('top-tip').textContent=p.kind==='pass'?'Find M. Slide usually goes to Mike’s side. Call out a blitzer.':'20 = CENTER · 21 = LEFT A-gap · 22 = RIGHT A-gap. Block first, then climb.';
+ document.querySelectorAll('[data-play]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.play===state.play)));
+ if(state.selected)showJob(state.selected);
+}
+function showJob(pos){
+ state.selected=pos;
+ const p=plays.find(x=>x.id===state.play);
+ for(const front of frontOrder){const s=scene(p,front,state.pressure);$('job-'+front).textContent=pos+': '+s.jobs[pos];}
+ $('look').querySelectorAll('[data-pos]').forEach(el=>el.classList.toggle('selected',el.dataset.pos===pos));
+}
+for(const p of plays){
+ const b=document.createElement('button');b.type='button';b.className='play-button';b.dataset.play=p.id;
+ b.setAttribute('aria-label',p.id+' '+p.name+' '+direction(p).toLowerCase());b.setAttribute('aria-pressed',String(p.id===state.play));
+ b.innerHTML=p.id+'<small>'+direction(p)+'</small>';b.addEventListener('click',()=>{state.play=p.id;render();});
+ $(p.kind==='pass'?'pass-buttons':['outside','stretch'].includes(p.kind)?'outside-buttons':'inside-buttons').appendChild(b);
+}
+$('pressure').addEventListener('change',e=>{state.pressure=e.target.value;render();});
+$('look').addEventListener('click',e=>{const p=e.target.closest('[data-pos]');if(p)showJob(p.dataset.pos);});
+$('look').addEventListener('keydown',e=>{const p=e.target.closest('[data-pos]');if(p&&(e.key==='Enter'||e.key===' ')){e.preventDefault();showJob(p.dataset.pos);}});
+$('print-current').addEventListener('click',()=>{document.body.classList.remove('book-print');window.print();});
+$('print-all').addEventListener('click',()=>{
+ $('print-book').innerHTML=plays.map(p=>`<div class="print-page">${playPage(p,p.kind==='pass'?state.pressure:'base','print-'+p.id,true)}</div>`).join('');
+ document.body.classList.add('book-print');window.print();
+});
+window.addEventListener('afterprint',()=>document.body.classList.remove('book-print'));
+render();
+// Local, read-only hook for checking every teaching diagram without a browser.
+window.muttsPlaybook={plays,fronts,scene,diagram,keys,runRoute,playPage};
+})();
+</script>
+</body>
+</html>
