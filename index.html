@@ -36,7 +36,7 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
  <div><span class="control-label">PASS</span><div class="play-buttons" id="pass-buttons" aria-label="Pass protection"></div></div>
 </div>
 <div class="pressure-row" id="pressure-control" hidden>
- <label><span class="control-label">PRESSURE · SHOWN AGAINST ALL THREE FRONTS</span><select id="pressure"><option value="base">Base · read the linebackers</option><option value="mike">Mike blitz</option><option value="back">Backside blitz</option><option value="edge">EDGE call · edge blitz, Mike drops</option><option value="overload">Edge + Mike</option></select></label>
+ <label><span class="control-label">PRESSURE · SHOWN IN EVERY LOOK</span><select id="pressure"><option value="base">Base · read the linebackers</option><option value="mike">Mike blitz</option><option value="back">Backside blitz</option><option value="edge">EDGE call · edge blitz, Mike drops</option><option value="overload">Edge + Mike</option></select></label>
 </div>
 <div id="pull-gap-control" class="pull-gap-control" hidden><label><input id="inside-threat" type="checkbox"> Show a free inside threat — STAY and CALL</label><p>Pull only after the inside gap is covered. A free inside threat stops the pull.</p></div>
 <p class="tip" id="top-tip">20 goes straight through the CENTER. 21 goes LEFT A-gap. 22 goes RIGHT A-gap.</p>
@@ -334,7 +334,7 @@ function passDiagram(play,front,pressure,uid){
  out+=`<path d="M${sets.C.x} 530V537H${sideT.x}V530" fill="none" stroke="#117a68" stroke-width="2"/><text x="${(sets.C.x+sideT.x)/2}" y="559" text-anchor="middle" font-size="18" font-weight="750" fill="#117a68">SLIDE ${d>0?'RIGHT':'LEFT'}</text><text x="${(backG.x+backT.x)/2}" y="559" text-anchor="middle" font-size="18" font-weight="750" fill="#3565b0">MAN</text><text x="360" y="590" text-anchor="middle" font-size="20" font-weight="750" fill="#687771">POCKET</text>`;
  }
  const hb=sets.HB;
- out+=`<path d="${s.fullSlide?`M${hb.x} ${hb.y-26}L${s.rbInterceptX} 548`:`M${hb.x} ${hb.y-26}V548`}" fill="none" stroke="#687771" stroke-width="2.5" stroke-dasharray="7 6"/><circle cx="${hb.x}" cy="${hb.y}" r="25" fill="#647b70"/><text x="${hb.x}" y="${hb.y+7}" text-anchor="middle" font-size="24" font-weight="750" fill="#fff">HB</text><circle cx="360" cy="650" r="27" fill="#172e29"/><text x="360" y="658" text-anchor="middle" font-size="25" font-weight="750" fill="#fff">QB</text><text x="80" y="701" font-size="17" fill="#687771">← LEFT</text><text x="360" y="701" text-anchor="middle" font-size="18" font-weight="750" fill="#687771">BACKFIELD ↓</text><text x="640" y="701" text-anchor="end" font-size="17" fill="#687771">RIGHT →</text></svg>`;
+ out+=`<path d="${s.fullSlide?`M${hb.x} ${hb.y-26}H${s.rbInterceptX}V548`:`M${hb.x} ${hb.y-26}V548`}" fill="none" stroke="#687771" stroke-width="2.5" stroke-dasharray="7 6"/><circle cx="${hb.x}" cy="${hb.y}" r="25" fill="#647b70"/><text x="${hb.x}" y="${hb.y+7}" text-anchor="middle" font-size="24" font-weight="750" fill="#fff">HB</text><circle cx="360" cy="650" r="27" fill="#172e29"/><text x="360" y="658" text-anchor="middle" font-size="25" font-weight="750" fill="#fff">QB</text><text x="80" y="701" font-size="17" fill="#687771">← LEFT</text><text x="360" y="701" text-anchor="middle" font-size="18" font-weight="750" fill="#687771">BACKFIELD ↓</text><text x="640" y="701" text-anchor="end" font-size="17" fill="#687771">RIGHT →</text></svg>`;
  return {svg:out,scene:s};
 }
 
@@ -434,7 +434,7 @@ function card(play,front,pressure,uid,printing=false){
  return `<article class="play" data-front="${front}"><div class="front-heading"><h3>${fronts[front]}</h3>${play.kind==='pass'?`<p class="run-action">SET BACK ↓ · then hold your gap</p>`:''}${action?`<p class="run-action">${action.label}</p>`:''}<p>${note}</p></div>${choice}<div class="diagram">${svg}</div>${fitNotes(play,s)}${printing?'':`<div class="job" id="job-${front}">Tap your spot to see your job.</div>`}</article>`;
 }
 function pageLegend(play){
- if(play.kind==='pass')return 'M = Mike · gray O-line = start · solid O-line = set back · colored arrows = YOUR backward set · red arrows = rush · HB scans inside → out';
+ if(play.kind==='pass')return 'M = Mike · gray O-line = start · solid O-line = set back · colored arrows = YOUR backward set · red arrows = rush · HB scans inside → out'+(play.protection==='full'?' · BOB = big on big':'');
  return 'M = Mike · flat end = block · dashed = read / help then climb · thick arrow = HB · HB arrow is an aim: follow the open crease'+(runAction(play)?' · small green arrows = first steps':'')+(play.kind==='stretch'?' · purple arrow = pull · inside block secured first':'')+' · H = extra edge help';
 }
 function playPage(play,pressure,uid,printing=false){
