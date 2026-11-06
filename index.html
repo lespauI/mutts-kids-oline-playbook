@@ -25,11 +25,12 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
 @media print{.pass-page .diagram{max-width:286px}.pass-page .front-heading{min-height:84px}}
 
 .full-slide-page .looks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:1000px){.full-slide-page .looks-grid{grid-template-columns:1fr}}@media print{.full-slide-page .looks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap}.language-buttons{display:flex;gap:4px}.language-buttons button{min-width:44px;padding:9px 11px}.direction{white-space:normal;text-align:center}.keys>*{min-width:0}@media(max-width:650px){header{flex-wrap:wrap}.header-actions{width:100%;justify-content:space-between}.play-heading{align-items:flex-start}.direction{font-size:12px}.play-heading h2{overflow-wrap:anywhere}}
 </style>
 </head>
 <body>
 <main id="app">
-<header><div><div class="eyebrow">O-LINE</div><h1>One play. One job.</h1><p>Pick a play. See every front. Find <strong>M</strong>.</p></div><button id="print-current" type="button">Print this page</button></header>
+<header><div><div class="eyebrow">O-LINE</div><h1>One play. One job.</h1><p>Pick a play. See every front. Find <strong>M</strong>.</p></div><div class="header-actions"><div class="language-buttons" role="group" aria-label="Language"><button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="true">EN</button><button type="button" data-language="pt" lang="pt-PT" aria-label="Português" aria-pressed="false">PT</button></div><button id="print-current" type="button">Print this page</button></div></header>
 <div class="controls">
  <div><span class="control-label">MIDDLE RUNS</span><div class="play-buttons" id="inside-buttons" aria-label="Middle runs"></div></div>
  <div><span class="control-label">OUTSIDE RUNS</span><div class="play-buttons" id="outside-buttons" aria-label="Outside runs"></div></div>
@@ -61,6 +62,291 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
 <script>
 (() => {
 'use strict';
+let language='en';
+const portuguese = {
+ "O-line Playbook": "Manual da linha ofensiva",
+ "O-LINE": "LINHA OFENSIVA",
+ "One play. One job.": "Uma jogada. Uma missão.",
+ "Pick a play. See every front. Find": "Escolhe uma jogada. Vê todas as frentes. Identifica o",
+ "Print this page": "Imprimir esta página",
+ "Print all 11 play pages": "Imprimir as 11 páginas de jogadas",
+ "MIDDLE RUNS": "CORRIDAS PELO MEIO",
+ "OUTSIDE RUNS": "CORRIDAS EXTERIORES",
+ "STRETCH RUNS": "CORRIDAS ALARGADAS",
+ "PASS": "PASSE",
+ "Middle runs": "Corridas pelo meio",
+ "Outside runs": "Corridas exteriores",
+ "Stretch runs": "Corridas alargadas",
+ "Pass protection": "Proteção de passe",
+ "Language": "Idioma",
+ "PRESSURE · SHOWN IN EVERY LOOK": "PRESSÃO · EM TODAS AS FRENTES",
+ "Base · read the linebackers": "Base · lê os linebackers",
+ "Mike blitz": "Blitz do Mike",
+ "Backside edge blitz": "Blitz exterior do lado oposto",
+ "Backside blitz": "Blitz do lado oposto",
+ "EDGE call · edge blitz, Mike drops": "Chamada EDGE · blitz exterior, Mike recua",
+ "EDGE called · Mike drops": "EDGE chamado · Mike recua",
+ "Edge + Mike · local overload": "Exterior + Mike · superioridade numérica local",
+ "Edge + Mike": "Exterior + Mike",
+ "Base read": "Leitura base",
+ "Show a free inside threat — STAY and CALL": "Mostrar uma ameaça interior livre — FICA e AVISA",
+ "Pull only after the inside gap is covered. A free inside threat stops the pull.": "Só sais em pull depois de o espaço interior estar protegido. Se houver uma ameaça interior livre, não sais.",
+ "Coach notes": "Notas do treinador",
+ "all play numbers": "todos os números das jogadas",
+ "Straight through center": "Direto pelo centro",
+ "Between C and LG": "Entre C e LG",
+ "Between C and RG": "Entre C e RG",
+ "Outside zone left / right": "Zona exterior à esquerda / direita",
+ "Stretch left / right": "Corrida alargada à esquerda / direita",
+ "Half-slide right / left": "Deslizamento parcial à direita / esquerda",
+ "Full-slide right / left": "Deslizamento total à direita / esquerda",
+ "Center in pass protection:": "Center na proteção de passe:",
+ "90 / 91 full-slide:": "90 / 91 — deslizamento total:",
+ "Run combos:": "Bloqueios em dupla na corrida:",
+ "Stretch pull rule:": "Regra de pull na corrida alargada:",
+ "H = edge help:": "H = ajuda no exterior:",
+ "Before the snap:": "Antes do snap:",
+ "Center dive": "Corrida pelo centro",
+ "Inside zone": "Zona interior",
+ "Outside zone": "Zona exterior",
+ "Stretch": "Corrida alargada",
+ "Half-slide": "Deslizamento parcial",
+ "Full-slide": "Deslizamento total",
+ "half-slide": "deslizamento parcial",
+ "full-slide": "deslizamento total",
+ "NT core · 5–0–5": "Frente com NT · 5–0–5",
+ "3–4 · odd front": "3–4 · frente ímpar",
+ "3-tech · 4–3": "Técnica 3 · 4–3",
+ "5-tech core · inside clear": "Frente de técnica 5 · interior livre",
+ "Backside 4i · inside rusher": "4i do lado oposto · ameaça interior",
+ "All four looks · backside tackle read": "As quatro frentes · leitura do tackle do lado oposto",
+ "All four looks · call one puller": "As quatro frentes · escolham quem sai em pull",
+ "All three defensive looks": "As três frentes defensivas",
+ "1 · FIRST STEP": "1 · PRIMEIRO PASSO",
+ "1 · SET": "1 · RECUAR",
+ "2 · CALL": "2 · COMUNICAR",
+ "2 · SLIDE": "2 · DESLIZAR",
+ "2 · TEAMWORK": "2 · TRABALHO EM DUPLA",
+ "3 · BACKSIDE TACKLE": "3 · TACKLE DO LADO OPOSTO",
+ "3 · CENTER": "3 · CENTER",
+ "3 · TARGET": "3 · ALVO",
+ "NT OVER C": "NT À FRENTE DO C",
+ "3-TECH OVER GUARD": "TÉCNICA 3 À FRENTE DO GUARD",
+ "5-TECH · INSIDE CLEAR": "TÉCNICA 5 · INTERIOR LIVRE",
+ "SET BACK ↓ · then hold your gap": "RECUA ↓ · depois protege o teu espaço",
+ "DRIVE ↑ · first step straight ahead": "EMPURRA ↑ · primeiro passo em frente",
+ "ZONE ↖ LEFT · first step toward the run": "ZONA ↖ ESQUERDA · primeiro passo para o lado da corrida",
+ "ZONE ↗ RIGHT · first step toward the run": "ZONA ↗ DIREITA · primeiro passo para o lado da corrida",
+ "Set BACK ↓. Stay square.": "RECUA ↓. Mantém os ombros de frente.",
+ "Read gaps. Pass stunts.": "Lê os espaços. Troquem os defensores nos cruzamentos.",
+ "Back T: read inside / outside.": "T do lado oposto: lê por dentro / por fora.",
+ "Hold gap. Pass stunts.": "Protege o espaço. Troquem os defensores nos cruzamentos.",
+ "C: N first; otherwise middle.": "C: primeiro N; sem N, lê o meio.",
+ "C: block N first.": "C: bloqueia N primeiro.",
+ "C: pick the middle blitz.": "C: apanha o blitz pelo meio.",
+ "Drive straight ahead.": "Empurra em frente.",
+ "Secure the block first.": "Garante primeiro o bloqueio.",
+ "HB: aim behind C.": "HB: aponta para trás do C.",
+ "First step left.": "Primeiro passo à esquerda.",
+ "First step right.": "Primeiro passo à direita.",
+ "Secure, then one climbs.": "Fixem o defensor; depois um sobe ao LB.",
+ "HB: aim between C and LG.": "HB: aponta entre C e LG.",
+ "HB: aim between C and RG.": "HB: aponta entre C e RG.",
+ "Step and reach left.": "Dá o passo e ganha o exterior à esquerda.",
+ "Step and reach right.": "Dá o passo e ganha o exterior à direita.",
+ "Keep your feet moving.": "Mantém os pés em movimento.",
+ "HB: between LG and LT.": "HB: entre LG e LT.",
+ "HB: between RG and RT.": "HB: entre RG e RT.",
+ "Backside guard pulls.": "O guard do lado oposto sai em pull.",
+ "C + backside guard decide.": "C e o guard do lado oposto decidem.",
+ "Center pulls.": "O center sai em pull.",
+ "Secure the double team.": "Fixem o defensor com o bloqueio em dupla.",
+ "H supplies extra edge help.": "H dá ajuda extra no exterior.",
+ "Tap your spot to see your job.": "Toca na tua posição para veres a tua missão.",
+ "Example: inside gap covered. Pull only after your teammate secures the inside block.": "Exemplo: espaço interior protegido. Só sais em pull depois de o teu colega garantir o bloqueio interior.",
+ "FREE INSIDE THREAT: STAY + CALL. Do not pull. Do not run until the call is fixed.": "AMEAÇA INTERIOR LIVRE: FICA + AVISA. Não saias em pull. Não corras até corrigirem a chamada.",
+ "FREE INSIDE THREAT: stay, block it, and call CHECK. No pull and no run until the call is fixed.": "AMEAÇA INTERIOR LIVRE: fica, bloqueia e chama CHECK. Sem pull nem corrida até corrigirem a chamada.",
+ "20 = CENTER · 21 = LEFT A-gap · 22 = RIGHT A-gap. Block first, then climb.": "20 = CENTRO · 21 = ESPAÇO A ESQUERDO · 22 = ESPAÇO A DIREITO. Primeiro bloqueia; depois sobe ao LB.",
+ "25 stretches LEFT. 26 stretches RIGHT. Call ONE puller. Close his gap.": "25 alarga à ESQUERDA. 26 alarga à DIREITA. Escolham UM jogador para o pull. Protejam o espaço dele.",
+ "90 RIGHT · 91 LEFT. Back T: inside = SLIDE; head-up/outside = BOB.": "90 DIREITA · 91 ESQUERDA. T do lado oposto: por dentro = SLIDE; de frente/por fora = BOB.",
+ "Find M. Slide usually goes to Mike’s side. Call out a blitzer.": "Identifica M. O deslizamento costuma ir para o lado do Mike. Avisa quem faz blitz.",
+ "23 goes LEFT. 24 goes RIGHT. Reach and keep moving.": "23 vai à ESQUERDA. 24 vai à DIREITA. Ganha o exterior e continua a mover os pés.",
+ "N = nose · E/T = defensive line · B/O = other linebackers · H = edge help": "N = nose tackle · E/T = linha defensiva · B/O = outros linebackers · H = ajuda no exterior",
+ "M = Mike · gray O-line = start · solid O-line = set back · colored arrows = YOUR backward set · red arrows = rush · HB scans inside → out": "M = Mike · linha cinzenta = início · linha a cheio = posição após recuo · setas coloridas = o TEU recuo · setas vermelhas = pressão · HB lê de dentro → fora",
+ " · BOB = big on big": " · BOB = bloqueio individual do defensor da linha",
+ "M = Mike · flat end = block · dashed = read / help then climb · thick arrow = HB · HB arrow is an aim: follow the open crease": "M = Mike · ponta plana = bloqueio · tracejado = ler / ajudar e depois subir ao LB · seta grossa = HB · a seta do HB é uma referência: segue o espaço livre",
+ " · small green arrows = first steps": " · setas verdes pequenas = primeiros passos",
+ " · purple arrow = pull · inside block secured first": " · seta roxa = pull · primeiro garante o bloqueio interior",
+ " · H = extra edge help": " · H = ajuda extra no exterior",
+ "Gray O-line markers show the start at the snap. Colored arrows point backward to the solid pass-set positions. The tackles set deeper and wider. The center uses a shorter inside set. Red arrows show defenders rushing toward the pocket. M is Mike.": "Os símbolos cinzentos da linha ofensiva mostram a posição no snap. As setas coloridas apontam para trás, até à posição de proteção a cheio. Os tackles recuam mais e abrem para fora. O center faz um recuo interior mais curto. As setas vermelhas mostram a pressão dos defensores sobre a bolsa de proteção. M é o Mike.",
+ "Offense is at the bottom. M is Mike. Lines with flat ends show blocks. Dashed lines show reads or a climb after a double team. The thick arrow shows the halfback run path.": "O ataque está em baixo. M é o Mike. As linhas com ponta plana mostram bloqueios. As linhas tracejadas mostram leituras ou a subida ao LB após um bloqueio em dupla. A seta grossa mostra o percurso do HB.",
+ "DEFENSE": "DEFESA",
+ "LOS": "LINHA",
+ "SNAP": "SNAP",
+ "READ": "LÊ",
+ "SHORT SET": "RECUO CURTO",
+ "JOIN SLIDE": "JUNTA AO SLIDE",
+ "SLIDE RIGHT": "SLIDE DIREITA",
+ "SLIDE LEFT": "SLIDE ESQUERDA",
+ "MAN": "INDIVIDUAL",
+ "POCKET": "BOLSA DE PROTEÇÃO",
+ "BACKFIELD ↓": "CAMPO ATRÁS ↓",
+ "STAY + CALL · NO PULL": "FICA + AVISA · SEM PULL",
+ "FLOW READ": "LÊ O FLUXO",
+ "FLOW?": "FLUXO?",
+ "NEEDS HELP": "PRECISA DE AJUDA",
+ "CALL ONE PULLER": "ESCOLHAM QUEM SAI EM PULL",
+ "STAY / CHECK — pull stopped": "FICA / CHECK — pull cancelado",
+ "Current example:": "Exemplo atual:",
+ "Example call:": "Exemplo de chamada:",
+ "pulls. C stays on N.": "sai em pull. C fica em N.",
+ "pulls. C + LG must agree.": "sai em pull. C e LG têm de concordar.",
+ "pulls. C + RG must agree.": "sai em pull. C e RG têm de concordar.",
+ "C pulls. Guards close inside.": "C sai em pull. Os guards fecham por dentro.",
+ "pulls": "sai em pull",
+ "PULL": "PULL",
+ "STAY + CALL.": "FICA + AVISA.",
+ "covers the inside threat. No pull.": "protege a ameaça interior. Sem pull.",
+ "head-up/outside → BOB.": "de frente/por fora → BOB.",
+ "inside rusher → JOIN SLIDE.": "ameaça por dentro → JUNTA AO SLIDE.",
+ "Gap covered first. Then pull left. Lead outside. Find the first free threat flowing out. Inside fill? STAY and CALL.": "Primeiro protege o espaço. Depois sai em pull à esquerda. Vai à frente por fora. Procura a primeira ameaça livre que sai para o exterior. O LB entra por dentro? FICA e AVISA.",
+ "Gap covered first. Then pull right. Lead outside. Find the first free threat flowing out. Inside fill? STAY and CALL.": "Primeiro protege o espaço. Depois sai em pull à direita. Vai à frente por fora. Procura a primeira ameaça livre que sai para o exterior. O LB entra por dentro? FICA e AVISA.",
+ "STAY. Protect the free inside threat. Call CHECK. Do not pull.": "FICA. Bloqueia a ameaça interior livre. Chama CHECK. Não saias em pull.",
+ "Head-up/outside rusher: call BOB. Set back, lock him, and protect inside. Pass a stunt; do not chase.": "Defensor de frente/por fora: chama BOB. Recua, bloqueia-o e protege por dentro. Troca o defensor num cruzamento; não o persigas.",
+ "Inside rusher: call SLIDE. Set back toward the call. Own the inside gap with your guard.": "Defensor por dentro: chama SLIDE. Recua para o lado chamado. Protege o espaço interior com o teu guard.",
+ "Set back toward the call. Secure T; hold your gap and pass stunts.": "Recua para o lado chamado. Fixa T; protege o teu espaço e troca os defensores nos cruzamentos.",
+ "Set back toward the call. Secure T. Hold your gap and pass stunts.": "Recua para o lado chamado. Fixa T. Protege o teu espaço e troca os defensores nos cruzamentos.",
+ "Call EDGE. Check middle first. Mike drops: secure T before the guard releases.": "Chama EDGE. Lê primeiro o meio. Mike recua: fixa T antes de o guard o largar.",
+ "Keep T until C secures him. Then take E and pass the outside rush.": "Fica com T até C o fixar. Depois bloqueia E e passa a ameaça exterior ao tackle.",
+ "Set back toward the call. Your guard takes E; you take the edge.": "Recua para o lado chamado. O teu guard fica com E; tu bloqueias a ameaça exterior.",
+ "No nose: set back and pick the middle blitz. Help inside if clear.": "Sem NT: recua e apanha o blitz pelo meio. Se não vier ninguém, ajuda por dentro.",
+ "Set back toward the call. Take E; protect your gap.": "Recua para o lado chamado. Bloqueia E; protege o teu espaço.",
+ "Call the exchange. Secure N before C releases him. Hold the inside gap.": "Chama a troca. Fixa N antes de C o largar. Protege o espaço interior.",
+ "N first until LG secures him. Then take Mike. Do not leave N free.": "Fica primeiro com N até LG o fixar. Depois bloqueia Mike. Não deixes N livre.",
+ "N first until RG secures him. Then take Mike. Do not leave N free.": "Fica primeiro com N até RG o fixar. Depois bloqueia Mike. Não deixes N livre.",
+ "Set back into your gap. Take E and pass the edge rush to your tackle.": "Recua para o teu espaço. Bloqueia E e passa a ameaça exterior ao teu tackle.",
+ "Set back toward the call. Take the outside edge rusher.": "Recua para o lado chamado. Bloqueia o defensor que vem por fora.",
+ "Set back toward the call. Read the inside LB; help N if the LB drops.": "Recua para o lado chamado. Lê o LB interior; ajuda em N se o LB recuar.",
+ "N first. Set back, hold the inside gap, and pass stunts with both guards.": "Primeiro N. Recua, protege o espaço interior e troca os defensores com os dois guards nos cruzamentos.",
+ "Call EDGE. Mike drops: take E. Pass the edge rush to your tackle.": "Chama EDGE. Mike recua: bloqueia E. Passa a ameaça exterior ao teu tackle.",
+ "Call EDGE. Set back into the outside gap and take the edge rusher.": "Chama EDGE. Recua para o espaço exterior e bloqueia quem vem por fora.",
+ "Set back toward the call. Read Mike; take him if he comes. Help inside if clear.": "Recua para o lado chamado. Lê Mike; bloqueia-o se vier. Se não vier, ajuda por dentro.",
+ "Set back toward the call. Take E and hold your outside gap.": "Recua para o lado chamado. Bloqueia E e protege o teu espaço exterior.",
+ "Check the backside inside first, then outside. Take the next extra backside edge rusher.": "Lê o lado oposto, primeiro por dentro e depois por fora. Bloqueia a próxima ameaça extra que vier pelo exterior desse lado.",
+ "Call EDGE. Check inside first. If clear, secure T before the guard leaves.": "Chama EDGE. Lê primeiro por dentro. Se estiver livre, fixa T antes de o guard sair.",
+ "Keep T until C secures him. Then pass outside and take E.": "Fica com T até C o fixar. Depois passa para fora e bloqueia E.",
+ "Call EDGE with your guard. Set outside and take the edge rusher.": "Chama EDGE com o teu guard. Abre para fora e bloqueia quem vem pelo exterior.",
+ "Inside first. Block your tackle. Pass a stunt with your tackle.": "Primeiro por dentro. Bloqueia o tackle defensivo. Troca o defensor com o teu tackle nos cruzamentos.",
+ "Hold your gap. Block the end; do not chase a stunt.": "Protege o teu espaço. Bloqueia o end; não persigas o defensor num cruzamento.",
+ "Hold your gap. Take the end; pass a stunt with your guard.": "Protege o teu espaço. Bloqueia o end; troca o defensor com o teu guard nos cruzamentos.",
+ "Inside first. Hold your gap. Take T; pass a stunt.": "Primeiro por dentro. Protege o teu espaço. Bloqueia T; troca o defensor num cruzamento.",
+ "No NT: pick the middle blitz. If clear, help inside. Hold your gap.": "Sem NT: apanha o blitz pelo meio. Se não vier ninguém, ajuda por dentro. Protege o teu espaço.",
+ "NT first. Hold the inside gap. Pass a stunt with your guard.": "Primeiro NT. Protege o espaço interior. Troca o defensor com o teu guard nos cruzamentos.",
+ "Call EDGE. Mike drops: take E and pass the outside rush to your tackle.": "Chama EDGE. Mike recua: bloqueia E e passa a ameaça exterior ao teu tackle.",
+ "Call EDGE. Your guard takes E; you take the edge rusher.": "Chama EDGE. O teu guard fica com E; tu bloqueias quem vem por fora.",
+ "Inside first. Hold your gap. Take E; pass a stunt with your guard.": "Primeiro por dentro. Protege o teu espaço. Bloqueia E; troca o defensor com o teu guard nos cruzamentos.",
+ "Read Mike. Take him if he comes. If clear, help inside. Do not chase.": "Lê Mike. Bloqueia-o se vier. Se não vier, ajuda por dentro. Não o persigas.",
+ "Inside first. Take the inside down lineman; pass a stunt with your tackle.": "Primeiro por dentro. Bloqueia o defensor interior da linha; troca-o com o teu tackle nos cruzamentos.",
+ "Hold your gap. Take the outside LB if he comes.": "Protege o teu espaço. Bloqueia o LB exterior se ele vier.",
+ "Inside first. Take the inside LB if he comes; help if clear.": "Primeiro por dentro. Bloqueia o LB interior se ele vier; se não vier, ajuda.",
+ "Hold your gap. Take E; pass a stunt with your guard.": "Protege o teu espaço. Bloqueia E; troca o defensor com o teu guard nos cruzamentos.",
+ "Scan the man side inside first, then outside. Take the first extra rusher.": "Lê o lado individual, primeiro por dentro e depois por fora. Bloqueia a primeira ameaça extra.",
+ "Pin N. Close the LG inside gap as he pulls.": "Fixa N por dentro. Fecha o espaço interior do LG quando ele sair em pull.",
+ "Pin N. Close the RG inside gap as he pulls.": "Fixa N por dentro. Fecha o espaço interior do RG quando ele sair em pull.",
+ "Step toward the run. Block Mike.": "Dá o passo para o lado da corrida. Bloqueia Mike.",
+ "Pin the end. Protect the inside gap.": "Fixa o end por dentro. Protege o espaço interior.",
+ "Call C pull. Secure the 3-tech and the inside gap before C leaves.": "Chama pull do C. Fixa o defensor de técnica 3 e protege o espaço interior antes de C sair.",
+ "Call LG pull. Secure his 3-tech before he leaves. If you cannot, call CHECK.": "Chama pull do LG. Fixa o defensor de técnica 3 dele antes de ele sair. Se não conseguires, chama CHECK.",
+ "Call RG pull. Secure his 3-tech before he leaves. If you cannot, call CHECK.": "Chama pull do RG. Fixa o defensor de técnica 3 dele antes de ele sair. Se não conseguires, chama CHECK.",
+ "Pin your tackle. Keep him inside.": "Fixa o tackle defensivo. Mantém-no por dentro.",
+ "Pin the end. Keep him inside.": "Fixa o end. Mantém-no por dentro.",
+ "Close inside as C pulls. Block the inside LB.": "Fecha por dentro quando C sair em pull. Bloqueia o LB interior.",
+ "Close inside as C pulls. Block Mike.": "Fecha por dentro quando C sair em pull. Bloqueia Mike.",
+ "Pin the 5-tech. Keep him inside.": "Fixa o defensor de técnica 5. Mantém-no por dentro.",
+ "Drive N with your guard. Stay on N.": "Empurra N com o teu guard. Fica com N.",
+ "Help C on N. Then block M.": "Ajuda C em N. Depois bloqueia M.",
+ "Step to the run. Block the other inside LB.": "Dá o passo para o lado da corrida. Bloqueia o outro LB interior.",
+ "Block the end. Keep your feet moving.": "Bloqueia o end. Mantém os pés em movimento.",
+ "Work with the backside guard on N. Stay on N.": "Trabalha com o guard do lado oposto em N. Fica com N.",
+ "Help C on N. Then take the other inside LB.": "Ajuda C em N. Depois bloqueia o outro LB interior.",
+ "Work with your tackle on E. Then block M.": "Trabalha com o teu tackle em E. Depois bloqueia M.",
+ "Work with your guard on E. Keep E blocked.": "Trabalha com o teu guard em E. Mantém E bloqueado.",
+ "Block the backside end.": "Bloqueia o end do lado oposto.",
+ "Help the play-side guard on T. Then block M.": "Ajuda o guard do lado da corrida em T. Depois bloqueia M.",
+ "Work with C on T. Keep T blocked.": "Trabalha com C em T. Mantém T bloqueado.",
+ "Block your tackle. Keep your feet moving.": "Bloqueia o tackle defensivo. Mantém os pés em movimento.",
+ "Block the end.": "Bloqueia o end.",
+ "EDGE call: Mike drops. C secures T; G and T pass the rush outside.": "Chamada EDGE: Mike recua. C fixa T; G e T passam a pressão para fora.",
+ "EDGE call: Mike drops. G takes E; T takes the edge.": "Chamada EDGE: Mike recua. G bloqueia E; T bloqueia a ameaça exterior.",
+ "EDGE call: Mike drops; no inside threat. C secures T before G releases.": "Chamada EDGE: Mike recua; sem ameaça interior. C fixa T antes de G o largar.",
+ "Inside exchange: LG secures N before C takes Mike. G/T take the edge pair.": "Troca interior: LG fixa N antes de C bloquear Mike. G/T bloqueiam os dois defensores exteriores.",
+ "Inside exchange: RG secures N before C takes Mike. G/T take the edge pair.": "Troca interior: RG fixa N antes de C bloquear Mike. G/T bloqueiam os dois defensores exteriores.",
+ "PULL READ —": "LEITURA DO PULL —",
+ "flowing outside. Coach must cover his inside fill before the pull.": "a sair para fora. O treinador tem de garantir uma resposta se ele entrar por dentro, antes do pull.",
+ "NEEDS HELP —": "PRECISA DE AJUDA —",
+ ": coach assigns a block, read, or check before the snap.": ": o treinador define um bloqueio, uma leitura ou um ajuste antes do snap.",
+ "local threats,": "ameaças locais,",
+ "slide blockers. QB needs a called hot route or a protection check before the snap.": "bloqueadores em slide. O QB precisa de uma rota rápida combinada (HOT) ou de um ajuste da proteção antes do snap.",
+ "B (inside LB)": "B (LB interior)",
+ "B (left outside LB)": "B (LB exterior esquerdo)",
+ "B (right outside LB)": "B (LB exterior direito)",
+ "O (left edge)": "O (exterior esquerdo)",
+ "O (right edge)": "O (exterior direito)",
+ "X (extra edge)": "X (ameaça exterior extra)",
+ "X (backside edge)": "X (exterior do lado oposto)",
+ "Read / help then climb": "Ler / ajudar e depois subir ao LB",
+ "Dashed line": "Linha tracejada",
+ "Thick arrow": "Seta grossa",
+ "Red arrow": "Seta vermelha",
+ "HB path": "Percurso do HB",
+ "Block": "Bloqueio",
+ "Blitz": "Blitz",
+ "against": "contra",
+ "set backward": "recuar para proteger",
+ "MIDDLE": "MEIO",
+ "RIGHT": "DIREITA",
+ "LEFT": "ESQUERDA",
+ "middle": "pelo meio",
+ "right": "à direita",
+ "left": "à esquerda",
+ "the declared protection reference, usually the middle linebacker or the likely blitzer. These pass examples place Mike toward the called slide. Confirm the call; do not change direction silently.": "a referência declarada da proteção, normalmente o linebacker do meio ou quem parece fazer blitz. Nestes exemplos de passe, Mike fica para o lado do deslizamento chamado. Confirmem a chamada; não mudem de direção sem avisar.",
+ "an NT on C is the first job. With no NT, C is the middle blitz picker. Set backward and stay square. The center uses a shorter inside set. Tackles kick back and out to form the pocket. Set depth depends on the defender and the pass timing; keep the interior depth coordinated. The gray O-line markers show the start, and the solid markers show the set position. A 3–4 normally has a nose. The 4–3 example here uses two 3-technique tackles and no nose; a different 4–3 alignment may put a nose back on C.": "o NT à frente do C é a primeira responsabilidade. Sem NT, C apanha o blitz pelo meio. Recua e mantém os ombros de frente. O center faz um recuo interior mais curto. Os tackles recuam e abrem para formar a bolsa de proteção. A profundidade do recuo depende do defensor e do tempo do passe; coordenem a profundidade dos jogadores interiores. Os símbolos cinzentos mostram o início; os símbolos a cheio mostram a posição de proteção. Uma 3–4 costuma ter um nose tackle. Este exemplo de 4–3 tem dois tackles de técnica 3 e não tem NT; outra disposição em 4–3 pode ter um NT à frente do C.",
+ "90 goes right; 91 goes left. Set backward and protect the called gaps. The backside tackle reads his nearest down rusher. Head-up or outside: call BOB, lock him, and keep the inside secure. Inside the tackle: join the slide. Four linemen slide when he uses BOB; all five slide when he joins. BOB means big on big, not chasing a stunt across the formation. HB checks inside first and takes the next backside edge threat. Call and secure each handoff before releasing a rusher.": "90 vai à direita; 91 vai à esquerda. Recuem e protejam os espaços chamados. O tackle do lado oposto lê o defensor da linha mais próximo. De frente ou por fora: chama BOB, bloqueia-o e protege por dentro. Por dentro do tackle: junta-te ao deslizamento. Quatro jogadores deslizam quando ele faz BOB; os cinco deslizam quando ele se junta. BOB significa bloquear individualmente um defensor da linha, sem o perseguir num cruzamento para o outro lado da formação. HB lê primeiro por dentro e bloqueia a próxima ameaça exterior do lado oposto. Comuniquem e garantam cada troca antes de largarem um defensor.",
+ "ACE = center + guard; DEUCE = guard + tackle. Both secure the down lineman first. The helper climbs only when the partner controls him. 20 goes directly through center; 21 hits the left A-gap between C and LG; 22 hits the right A-gap between C and RG. On 20, the first step drives straight ahead. On 21, it zones left; on 22, it zones right. Small green arrows show these steps; the flat-ended lines show the example block assignments. 23 aims between LG and LT; 24 aims between RG and RT, and 25/26 stretch wider to the edge.": "ACE = center + guard; DEUCE = guard + tackle. Primeiro, os dois fixam o defensor da linha. Quem ajuda só sobe ao LB quando o colega controla o defensor. 20 vai direto pelo centro; 21 entra no espaço A esquerdo entre C e LG; 22 entra no espaço A direito entre C e RG. Em 20, o primeiro passo empurra em frente. Em 21, vai em zona à esquerda; em 22, vai em zona à direita. As setas verdes pequenas mostram estes passos; as linhas de ponta plana mostram os bloqueios do exemplo. 23 aponta entre LG e LT; 24 aponta entre RG e RT; 25/26 alargam a corrida até ao exterior.",
+ "An NT takes priority: the backside guard pulls (RG on 25 left; LG on 26 right), and C stays on N. Against a 3-tech, C and the backside guard communicate and call one puller; the other player takes the 3-tech. The buttons show either example. Against a 5-tech with no NT or 3-tech inside, C pulls. A 5-tech end does not override an NT or 3-tech inside. Inside blockers secure the pulling player’s gap before he leaves. If an inside threat remains free, he stays and calls CHECK. The puller leads outside only after that coverage is secure.": "O NT tem prioridade: o guard do lado oposto sai em pull (RG no 25 à esquerda; LG no 26 à direita), e C fica em N. Contra técnica 3, C e o guard do lado oposto comunicam e escolhem um jogador para sair em pull; o outro bloqueia o defensor de técnica 3. Os botões mostram as duas opções. Contra técnica 5, sem NT nem técnica 3 por dentro, C sai em pull. Um end de técnica 5 não tem prioridade sobre um NT ou uma técnica 3 por dentro. Os bloqueadores interiores protegem o espaço de quem sai em pull antes de ele sair. Se uma ameaça interior ficar livre, ele fica e chama CHECK. Só vai à frente pelo exterior depois de o interior estar protegido.",
+ "an additional TE or H-back block is shown in the full 3–4 and 4–3 run looks. Assign the remaining formation blocks before using the play. A dangerous backside edge needs a declared answer; use the called CAP or SPLIT answer. Extra simultaneous blitzers require a protection adjustment or a QB hot answer.": "os exemplos completos de corrida contra 3–4 e 4–3 mostram um bloqueio extra de TE ou H-back. Define os restantes bloqueios da formação antes de usar a jogada. Uma ameaça perigosa no exterior do lado oposto precisa de uma resposta declarada; usa a resposta CAP ou SPLIT chamada. Vários blitzers ao mesmo tempo exigem um ajuste da proteção ou uma resposta rápida do QB (HOT).",
+ "Red-ring defenders on run pages still need a formation block, read, or check. A flow read is conditional: a linebacker who fills inside must have an answer before the pull. A lone edge pass blitz can use the called EDGE exchange when Mike drops and the inside is clear. On 60/61, edge plus Mike creates a local four-on-three overload; protect inside first and call the named hot route or change the protection.": "Os defensores com círculo vermelho nas páginas de corrida ainda precisam de um bloqueio da formação, de uma leitura ou de um ajuste. A leitura do fluxo é condicional: antes do pull, é preciso definir uma resposta se o linebacker entrar por dentro. Um único blitz exterior no passe pode usar a troca EDGE chamada quando Mike recua e o interior está livre. Em 60/61, exterior mais Mike cria quatro ameaças locais contra três bloqueadores; protege primeiro por dentro e chama a rota rápida combinada (HOT) ou muda a proteção."
+};
+const translatedPhrases=Object.keys(portuguese).sort((a,b)=>b.length-a.length);
+const phrasePattern=new RegExp(translatedPhrases.map(s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+const originalText=new WeakMap(),originalAttributes=new WeakMap();
+function translateText(text){return language==='pt'?text.replace(phrasePattern,phrase=>portuguese[phrase]):text;}
+function localize(root){
+ function visit(node){
+  if(node.nodeType===3){
+   const previous=originalText.get(node),source=previous&&node.nodeValue===previous.output?previous.source:node.nodeValue;
+   const output=translateText(source);if(node.nodeValue!==output)node.nodeValue=output;
+   originalText.set(node,{source,output});
+  }else if(node.nodeType===1&&!['SCRIPT','STYLE'].includes(node.tagName)){
+   const attrs=originalAttributes.get(node)||{};
+   for(const name of ['aria-label','title'])if(node.hasAttribute(name)){
+    const value=node.getAttribute(name),previous=attrs[name],source=previous&&value===previous.output?previous.source:value;
+    const output=translateText(source);node.setAttribute(name,output);attrs[name]={source,output};
+   }
+   originalAttributes.set(node,attrs);
+   for(const child of node.childNodes)visit(child);
+  }
+ }
+ visit(root);
+}
+function setLanguage(next){
+ language=next==='pt'?'pt':'en';
+ document.documentElement.lang=language==='pt'?'pt-PT':'en';
+ document.title=translateText('O-line Playbook');
+ document.querySelectorAll('[data-language]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.language===language)));
+ render();
+ localize($('print-book'));
+}
 const plays = [
  {id:'20',name:'Center dive',kind:'dive',dir:0}, {id:'21',name:'Inside zone',kind:'inside',dir:-1},
  {id:'22',name:'Inside zone',kind:'inside',dir:1}, {id:'23',name:'Outside zone',kind:'outside',dir:-1},
@@ -454,11 +740,12 @@ function render(){
  $('top-tip').textContent=p.kind==='stretch'?'25 stretches LEFT. 26 stretches RIGHT. Call ONE puller. Close his gap.':p.protection==='full'?'90 RIGHT · 91 LEFT. Back T: inside = SLIDE; head-up/outside = BOB.':p.kind==='pass'?'Find M. Slide usually goes to Mike’s side. Call out a blitzer.':p.kind==='outside'?'23 goes LEFT. 24 goes RIGHT. Reach and keep moving.':'20 = CENTER · 21 = LEFT A-gap · 22 = RIGHT A-gap. Block first, then climb.';
  document.querySelectorAll('[data-play]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.play===state.play)));
  if(state.selected)showJob(state.selected);
+ localize($('app'));
 }
 function showJob(pos){
  state.selected=pos;
  const p=plays.find(x=>x.id===state.play);
- for(const front of pageFronts(p)){const s=scene(p,front,state.pressure);$('job-'+front).textContent=pos+': '+s.jobs[pos];}
+ for(const front of pageFronts(p)){const s=scene(p,front,state.pressure);$('job-'+front).textContent=pos+': '+s.jobs[pos];localize($('job-'+front));}
  $('look').querySelectorAll('[data-pos]').forEach(el=>el.classList.toggle('selected',el.dataset.pos===pos));
 }
 for(const p of plays){
@@ -467,6 +754,7 @@ for(const p of plays){
  b.innerHTML=p.id+'<small>'+direction(p)+'</small>';b.addEventListener('click',()=>{state.play=p.id;render();});
  $(p.kind==='pass'?'pass-buttons':p.kind==='stretch'?'stretch-buttons':p.kind==='outside'?'outside-buttons':'inside-buttons').appendChild(b);
 }
+document.querySelectorAll('[data-language]').forEach(button=>button.addEventListener('click',()=>setLanguage(button.dataset.language)));
 $('pressure').addEventListener('change',e=>{state.pressure=e.target.value;render();});
 $('inside-threat').addEventListener('change',e=>{state.pullGapClear=!e.target.checked;render();});
 $('look').addEventListener('click',e=>{const call=e.target.closest('[data-pull]');if(call){state.threeTechPull=call.dataset.pull;render();return;}const p=e.target.closest('[data-pos]');if(p)showJob(p.dataset.pos);});
@@ -474,6 +762,7 @@ $('look').addEventListener('keydown',e=>{const p=e.target.closest('[data-pos]');
 $('print-current').addEventListener('click',()=>{document.body.classList.remove('book-print');window.print();});
 $('print-all').addEventListener('click',()=>{
  $('print-book').innerHTML=plays.map(p=>`<div class="print-page">${playPage(p,p.kind==='pass'?state.pressure:'base','print-'+p.id,true)}</div>`).join('');
+ localize($('print-book'));
  document.body.classList.add('book-print');window.print();
 });
 window.addEventListener('afterprint',()=>document.body.classList.remove('book-print'));
