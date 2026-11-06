@@ -20,6 +20,8 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
 @media print{.pull-gap-control{display:none!important}.pull-condition{font-size:11px;padding:6px 8px;margin:0 0 10px}.fit-notes{padding:0 8px 6px}.fit-note{font-size:11px;line-height:1.3;padding:4px 5px;margin-top:4px}.stretch-page .diagram{max-width:310px}.page-key{font-size:8px}}
 
 .run-action{font-weight:750!important;color:#117a68!important;font-size:14px!important;margin-top:7px!important}@media print{.run-action{font-size:11px!important}}
+
+@media print{.pass-page .diagram{max-width:286px}.pass-page .front-heading{min-height:84px}}
 </style>
 </head>
 <body>
@@ -43,7 +45,7 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
  <summary>Coach notes &amp; all play numbers</summary>
  <div class="codes"><div><strong>20</strong> Straight through center</div><div><strong>21</strong> Between C and LG</div><div><strong>22</strong> Between C and RG</div><div><strong>23 / 24</strong> Outside zone left / right</div><div><strong>25 / 26</strong> Stretch left / right</div><div><strong>60 / 61</strong> Half-slide right / left</div></div>
  <p><strong>Mike:</strong> the declared protection reference, usually the middle linebacker or the likely blitzer. These pass examples place Mike toward the called slide. Confirm the call; do not change direction silently.</p>
- <p><strong>Center in pass protection:</strong> an NT on C is the first job. With no NT, C is the middle blitz picker. A 3–4 normally has a nose. The 4–3 example here uses two 3-technique tackles and no nose; a different 4–3 alignment may put a nose back on C.</p>
+ <p><strong>Center in pass protection:</strong> an NT on C is the first job. With no NT, C is the middle blitz picker. Set backward and stay square. The center uses a shorter inside set. Tackles kick back and out to form the pocket. Set depth depends on the defender and the pass timing; keep the interior depth coordinated. The gray O-line markers show the start, and the solid markers show the set position. A 3–4 normally has a nose. The 4–3 example here uses two 3-technique tackles and no nose; a different 4–3 alignment may put a nose back on C.</p>
  <p><strong>Run combos:</strong> ACE = center + guard; DEUCE = guard + tackle. Both secure the down lineman first. The helper climbs only when the partner controls him. 20 goes directly through center; 21 hits the left A-gap between C and LG; 22 hits the right A-gap between C and RG. On 20, the first step drives straight ahead. On 21, it zones left; on 22, it zones right. Small green arrows show these steps; the flat-ended lines show the example block assignments. 23 aims between LG and LT; 24 aims between RG and RT, and 25/26 stretch wider to the edge.</p>
  <p><strong>Stretch pull rule:</strong> An NT takes priority: the backside guard pulls (RG on 25 left; LG on 26 right), and C stays on N. Against a 3-tech, C and the backside guard communicate and call one puller; the other player takes the 3-tech. The buttons show either example. Against a 5-tech with no NT or 3-tech inside, C pulls. A 5-tech end does not override an NT or 3-tech inside. Inside blockers secure the pulling player’s gap before he leaves. If an inside threat remains free, he stays and calls CHECK. The puller leads outside only after that coverage is secure.</p>
  <p><strong>H = edge help:</strong> an additional TE or H-back block is shown in the full 3–4 and 4–3 run looks. Assign the remaining formation blocks before using the play. A dangerous backside edge needs a declared answer; use the called CAP or SPLIT answer. Extra simultaneous blitzers require a protection adjustment or a QB hot answer.</p>
@@ -213,7 +215,59 @@ function runRoute(play){
  const path=play.id==='20'?'M360 500L360 280':['dive','inside','outside'].includes(play.kind)?`M360 500Q${x} 435 ${x} 340L${x} 280`:`M360 500C${360+d*165} 500 ${x} 450 ${x} 340L${x} 280`;
  return {x,path};
 }
+function passPositions(play){
+ const d=play.dir,sideG=d>0?'RG':'LG',sideT=d>0?'RT':'LT';
+ const result={};
+ for(const pos of positions){
+  const center=pos==='C',tackle=pos==='LT'||pos==='RT',slide=center||pos===sideG||pos===sideT;
+  const dx=center?10*d:slide?(tackle?26:18)*d:-(tackle?25:12)*d;
+  result[pos]={x:ox[pos]+dx,y:center?430:tackle?470:440,slide,color:center?'#8056a6':slide?'#117a68':'#3565b0'};
+ }
+ result.HB={x:360-d*150,y:605};
+ return result;
+}
+function passDiagram(play,front,pressure,uid){
+ const s=scene(play,front,pressure),d=play.dir,sets=passPositions(play);
+ let out=`<svg viewBox="0 0 720 720" role="group" aria-labelledby="${uid}-title ${uid}-desc"><title id="${uid}-title">${play.id} half-slide ${d>0?'right':'left'}: set backward</title><desc id="${uid}-desc">Gray O-line markers show the start at the snap. Colored arrows point backward to the solid pass-set positions. The tackles set deeper and wider. The center uses a shorter inside set. Red arrows show defenders rushing toward the pocket. M is Mike.</desc><defs>`;
+ for(const [name,color] of [['zone','#117a68'],['man','#3565b0'],['center','#8056a6'],['rush','#bb433e']])out+=`<marker id="${uid}-${name}" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L12 6 0 12Z" fill="${color}"/></marker>`;
+ out+='</defs><text x="360" y="44" text-anchor="middle" font-size="18" letter-spacing="3" fill="#687771">DEFENSE</text><path d="M35 305H685" fill="none" stroke="#abb8ae" stroke-width="1.5" stroke-dasharray="7 7"/><text x="35" y="294" font-size="17" fill="#687771">LOS</text><text x="35" y="360" font-size="16" font-weight="700" fill="#7c8982">SNAP</text>';
+ // Rushers come to the set point; O-line arrows never point upfield.
+ for(const id of s.rushers){
+  const r=s.byId[id],block=s.blocks.find(b=>b.target===id),hot=s.hot.includes(id);
+  let tx,ty;
+  if(block){const set=sets[block.pos],offset=r.x>=set.x?18:-18;tx=set.x+offset;ty=set.y-36;if(block.pos==='HB'){tx=set.x;ty=540;}}
+  else{tx=360+d*315;ty=580;}
+  const cy=block&&block.pos==='HB'?370:320;
+  out+=`<path data-pass-rusher="${id}" d="M${r.x} ${r.y+28} Q${tx} ${cy} ${tx} ${ty}" fill="none" stroke="#bb433e" stroke-opacity="${['EL','ER','N','TL','TR'].includes(id)?'0.65':'1'}" stroke-width="${['EL','ER','N','TL','TR'].includes(id)?'2.5':'3.5'}"${['EL','ER','N','TL','TR'].includes(id)?'':' stroke-dasharray="8 5"'} marker-end="url(#${uid}-rush)"/>`;
+  if(hot)out+=`<text x="${tx}" y="607" text-anchor="middle" font-size="20" font-weight="750" fill="#bb433e">HOT</text>`;
+ }
+ // The gray start row and solid set row show the change of position.
+ for(const pos of positions){
+  const set=sets[pos],kind=pos==='C'?'center':set.slide?'zone':'man';
+  out+=`<path data-pass-set="${pos}" data-start-y="355" data-set-y="${set.y}" d="M${ox[pos]} 373 Q${ox[pos]} ${(373+set.y-34)/2} ${set.x} ${set.y-34}" fill="none" stroke="${set.color}" stroke-width="5" marker-end="url(#${uid}-${kind})"/>`;
+ }
+ for(const r of s.defs){
+  const m=r.id==='M',read=!s.rushers.includes(r.id),hot=s.hot.includes(r.id);
+  out+=`<g data-defender="${r.id}" data-rush="${!read}">${hot?`<circle cx="${r.x}" cy="${r.y}" r="31" fill="none" stroke="#bb433e" stroke-width="2" stroke-dasharray="4 4"/>`:''}<circle cx="${r.x}" cy="${r.y}" r="25" fill="${m?'#fff0c7':read?'#fafaf6':'#fff7f2'}" stroke="${m?'#a86305':read?'#8c948e':'#b45b4e'}" stroke-width="${m?3:2}"${read?' stroke-dasharray="5 4"':''}/><text x="${r.x}" y="${r.y+8}" text-anchor="middle" font-size="30" font-weight="700" fill="${m?'#8b5000':read?'#727c74':'#a13f35'}">${r.l}</text>${m?`<text x="${r.x}" y="${r.y-38}" text-anchor="middle" font-size="19" font-weight="750" fill="#8b5000">MIKE</text>`:''}${read?`<text x="${r.x}" y="${r.y+43}" text-anchor="middle" font-size="14" fill="#727c74">READ</text>`:''}</g>`;
+ }
+ for(const pos of positions){
+  const x=ox[pos];
+  out+=`<g data-pass-start="${pos}" aria-hidden="true" pointer-events="none">${pos==='C'?`<rect x="${x-15}" y="340" width="30" height="30" rx="3" fill="#f4f5f2" stroke="#a2aba5" stroke-width="1.5" stroke-dasharray="4 3"/>`:`<circle cx="${x}" cy="355" r="15" fill="#f4f5f2" stroke="#a2aba5" stroke-width="1.5" stroke-dasharray="4 3"/>`}<text x="${x}" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#7c8982">${pos}</text></g>`;
+ }
+ for(const pos of positions){
+  const set=sets[pos],center=pos==='C';
+  out+=`<path data-pass-contact="${pos}" d="M${set.x-23} ${set.y-32}H${set.x+23}" fill="none" stroke="${set.color}" stroke-width="4"/><g class="player${state.selected===pos?' selected':''}" data-pos="${pos}" role="button" tabindex="0" aria-label="${pos}: ${esc(s.jobs[pos])}">${center?`<rect class="player-shape" x="${set.x-27}" y="${set.y-27}" width="54" height="54" rx="5" fill="${set.color}" stroke="#fff" stroke-width="3"/>`:`<circle class="player-shape" cx="${set.x}" cy="${set.y}" r="28" fill="${set.color}" stroke="#fff" stroke-width="3"/>`}<text x="${set.x}" y="${set.y+8}" text-anchor="middle" font-size="30" font-weight="750" fill="#fff">${pos}</text></g>`;
+  if(center)out+=`<text x="${set.x}" y="${set.y+48}" text-anchor="middle" font-size="16" font-weight="700" fill="#8056a6">SHORT SET</text>`;
+ }
+ const sideT=sets[d>0?'RT':'LT'],backG=sets[d>0?'LG':'RG'],backT=sets[d>0?'LT':'RT'];
+ out+=`<path d="M${sets.C.x} 530V537H${sideT.x}V530" fill="none" stroke="#117a68" stroke-width="2"/><text x="${(sets.C.x+sideT.x)/2}" y="559" text-anchor="middle" font-size="18" font-weight="750" fill="#117a68">SLIDE ${d>0?'RIGHT':'LEFT'}</text><text x="${(backG.x+backT.x)/2}" y="559" text-anchor="middle" font-size="18" font-weight="750" fill="#3565b0">MAN</text><text x="360" y="590" text-anchor="middle" font-size="20" font-weight="750" fill="#687771">POCKET</text>`;
+ const hb=sets.HB;
+ out+=`<path d="M${hb.x} ${hb.y-26}V548" fill="none" stroke="#687771" stroke-width="2.5" stroke-dasharray="7 6"/><circle cx="${hb.x}" cy="${hb.y}" r="25" fill="#647b70"/><text x="${hb.x}" y="${hb.y+7}" text-anchor="middle" font-size="24" font-weight="750" fill="#fff">HB</text><circle cx="360" cy="650" r="27" fill="#172e29"/><text x="360" y="658" text-anchor="middle" font-size="25" font-weight="750" fill="#fff">QB</text><text x="80" y="701" font-size="17" fill="#687771">← LEFT</text><text x="360" y="701" text-anchor="middle" font-size="18" font-weight="750" fill="#687771">BACKFIELD ↓</text><text x="640" y="701" text-anchor="end" font-size="17" fill="#687771">RIGHT →</text></svg>`;
+ return {svg:out,scene:s};
+}
+
 function diagram(play,front,pressure,uid){
+ if(play.kind==='pass')return passDiagram(play,front,pressure,uid);
  const s=scene(play,front,pressure),pass=play.kind==='pass',d=play.dir||1,action=runAction(play);
  const colors={block:'#117a68',combo:'#117a68',slide:'#117a68',man:'#3565b0',center:'#8056a6',read:'#8056a6',back:'#687771'};
  let out=`<svg viewBox="0 0 720 575" role="group" aria-labelledby="${uid}-title ${uid}-desc"><title id="${uid}-title">${esc(play.id+' '+play.name+' '+direction(play).toLowerCase()+' against '+fronts[front])}</title><desc id="${uid}-desc">Offense is at the bottom. M is Mike. Lines with flat ends show blocks. Dashed lines show reads or a climb after a double team. ${pass?(front==='43'?'No NT: center picks middle pressure.':'Center blocks the nose tackle.'):'The thick arrow shows the halfback run path.'}</desc><defs>`;
@@ -280,7 +334,7 @@ function diagram(play,front,pressure,uid){
 }
 function keys(play,front){
  const dir=play.dir>0?'right':'left';
- if(play.kind==='pass')return ['Set back. Inside first.','Hold gap. Pass stunts.',front==='43'?'C: pick the middle blitz.':'C: block N first.'];
+ if(play.kind==='pass')return ['Set BACK ↓. Stay square.','Hold gap. Pass stunts.',front==='43'?'C: pick the middle blitz.':'C: block N first.'];
  if(play.id==='20')return ['Drive straight ahead.','Secure the block first.','HB: aim behind C.'];
  if(play.id==='21')return ['First step left.','Secure, then one climbs.','HB: aim between C and LG.'];
  if(play.id==='22')return ['First step right.','Secure, then one climbs.','HB: aim between C and RG.'];
@@ -304,14 +358,14 @@ function card(play,front,pressure,uid,printing=false){
  const stretch=play.kind==='stretch',action=runAction(play);
  const note=stretch?s.pullRule:play.kind==='pass'?(front==='43'?'C: pick the middle blitz.':'C: block N first.'):(front==='nt'?'Secure the double team.':'H supplies extra edge help.');
  const choice=stretch&&front==='43'?`<div class="pull-options"><span>C + ${s.bsG}: CALL ONE PULLER</span>${printing?(s.pullStopped?`<strong>STAY / CHECK — pull stopped</strong>`:`<strong>Current example: ${s.puller} pulls</strong>`):`<div><button type="button" data-pull="C" aria-pressed="${state.threeTechPull==='C'}">C pulls</button><button type="button" data-pull="G" aria-pressed="${state.threeTechPull==='G'}">${s.bsG} pulls</button></div>`}</div>`:'';
- return `<article class="play" data-front="${front}"><div class="front-heading"><h3>${fronts[front]}</h3>${action?`<p class="run-action">${action.label}</p>`:''}<p>${note}</p></div>${choice}<div class="diagram">${svg}</div>${fitNotes(play,s)}${printing?'':`<div class="job" id="job-${front}">Tap your spot to see your job.</div>`}</article>`;
+ return `<article class="play" data-front="${front}"><div class="front-heading"><h3>${fronts[front]}</h3>${play.kind==='pass'?`<p class="run-action">SET BACK ↓ · then hold your gap</p>`:''}${action?`<p class="run-action">${action.label}</p>`:''}<p>${note}</p></div>${choice}<div class="diagram">${svg}</div>${fitNotes(play,s)}${printing?'':`<div class="job" id="job-${front}">Tap your spot to see your job.</div>`}</article>`;
 }
 function playPage(play,pressure,uid,printing=false){
  const stretch=play.kind==='stretch',k=keys(play,'nt');
  if(play.kind==='pass')k[2]='C: N first; otherwise middle.';
  const labels=stretch?['NT OVER C','3-TECH OVER GUARD','5-TECH · INSIDE CLEAR']:play.kind==='pass'?['1 · SET','2 · CALL','3 · CENTER']:['1 · FIRST STEP','2 · TEAMWORK','3 · TARGET'];
  const pressureName={base:'Base read',mike:'Mike blitz',back:'Backside blitz',edge:'EDGE called · Mike drops',overload:'Edge + Mike · local overload'}[pressure];
- return `<section class="play-page${stretch?' stretch-page':''}"><div class="play-heading"><div><h2>${play.id} · ${play.name}</h2><p>${stretch?'All four looks · call one puller':'All three defensive looks'}${play.kind==='pass'?' · '+pressureName:''}</p></div><div class="direction">${play.dir===0?'↑ MIDDLE':play.dir>0?'RIGHT →':'← LEFT'}</div></div><div class="keys">${k.map((v,i)=>`<div class="key"><span>${labels[i]}</span>${v}</div>`).join('')}</div>${stretch?`<p class="pull-condition${state.pullGapClear?'':' stop'}">${state.pullGapClear?'Example: inside gap covered. Pull only after your teammate secures the inside block.':'FREE INSIDE THREAT: STAY + CALL. Do not pull. Do not run until the call is fixed.'}</p>`:''}<div class="looks-grid">${pageFronts(play).map(f=>card(play,f,pressure,uid+'-'+f,printing)).join('')}</div><p class="page-key">M = Mike · flat end = block · dashed = read / help then climb · thick arrow = HB${play.kind==='pass'?' · solid defender = rush · dashed defender = read · HB scans man side inside → out':` · HB arrow is an aim: follow the open crease${runAction(play)?' · small green arrows = first steps':''}`}${stretch?' · purple arrow = pull · inside block secured first':''} · H = extra edge help</p></section>`;
+ return `<section class="play-page${stretch?' stretch-page':play.kind==='pass'?' pass-page':''}"><div class="play-heading"><div><h2>${play.id} · ${play.name}</h2><p>${stretch?'All four looks · call one puller':'All three defensive looks'}${play.kind==='pass'?' · '+pressureName:''}</p></div><div class="direction">${play.dir===0?'↑ MIDDLE':play.dir>0?'RIGHT →':'← LEFT'}</div></div><div class="keys">${k.map((v,i)=>`<div class="key"><span>${labels[i]}</span>${v}</div>`).join('')}</div>${stretch?`<p class="pull-condition${state.pullGapClear?'':' stop'}">${state.pullGapClear?'Example: inside gap covered. Pull only after your teammate secures the inside block.':'FREE INSIDE THREAT: STAY + CALL. Do not pull. Do not run until the call is fixed.'}</p>`:''}<div class="looks-grid">${pageFronts(play).map(f=>card(play,f,pressure,uid+'-'+f,printing)).join('')}</div><p class="page-key">M = Mike · flat end = block · dashed = read / help then climb · thick arrow = HB${play.kind==='pass'?' · gray O-line = start · solid O-line = set back · colored arrows = YOUR backward set · red arrows = rush · HB scans inside → out':` · HB arrow is an aim: follow the open crease${runAction(play)?' · small green arrows = first steps':''}`}${stretch?' · purple arrow = pull · inside block secured first':''} · H = extra edge help</p></section>`;
 }
 function render(){
  const p=plays.find(x=>x.id===state.play);
