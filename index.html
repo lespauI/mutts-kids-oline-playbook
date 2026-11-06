@@ -44,7 +44,7 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
  <div class="codes"><div><strong>20</strong> Straight through center</div><div><strong>21</strong> Between C and LG</div><div><strong>22</strong> Between C and RG</div><div><strong>23 / 24</strong> Outside zone left / right</div><div><strong>25 / 26</strong> Stretch left / right</div><div><strong>60 / 61</strong> Half-slide right / left</div></div>
  <p><strong>Mike:</strong> the declared protection reference, usually the middle linebacker or the likely blitzer. These pass examples place Mike toward the called slide. Confirm the call; do not change direction silently.</p>
  <p><strong>Center in pass protection:</strong> an NT on C is the first job. With no NT, C is the middle blitz picker. A 3–4 normally has a nose. The 4–3 example here uses two 3-technique tackles and no nose; a different 4–3 alignment may put a nose back on C.</p>
- <p><strong>Run combos:</strong> ACE = center + guard; DEUCE = guard + tackle. Both secure the down lineman first. The helper climbs only when the partner controls him. 20 goes directly through center; 21 hits the left A-gap between C and LG; 22 hits the right A-gap between C and RG. On 20/21, the first step drives straight ahead. On 22, the first step zones right. Small green arrows show these steps; the flat-ended lines show the example block assignments. 23/24 aim outside the tackle, and 25/26 stretch wider to the edge.</p>
+ <p><strong>Run combos:</strong> ACE = center + guard; DEUCE = guard + tackle. Both secure the down lineman first. The helper climbs only when the partner controls him. 20 goes directly through center; 21 hits the left A-gap between C and LG; 22 hits the right A-gap between C and RG. On 20, the first step drives straight ahead. On 21, it zones left; on 22, it zones right. Small green arrows show these steps; the flat-ended lines show the example block assignments. 23 aims between LG and LT; 24 aims between RG and RT, and 25/26 stretch wider to the edge.</p>
  <p><strong>Stretch pull rule:</strong> An NT takes priority: the backside guard pulls (RG on 25 left; LG on 26 right), and C stays on N. Against a 3-tech, C and the backside guard communicate and call one puller; the other player takes the 3-tech. The buttons show either example. Against a 5-tech with no NT or 3-tech inside, C pulls. A 5-tech end does not override an NT or 3-tech inside. Inside blockers secure the pulling player’s gap before he leaves. If an inside threat remains free, he stays and calls CHECK. The puller leads outside only after that coverage is secure.</p>
  <p><strong>H = edge help:</strong> an additional TE or H-back block is shown in the full 3–4 and 4–3 run looks. Assign the remaining formation blocks before using the play. A dangerous backside edge needs a declared answer; use the called CAP or SPLIT answer. Extra simultaneous blitzers require a protection adjustment or a QB hot answer.</p>
  <p><strong>Before the snap:</strong> Red-ring defenders on run pages still need a formation block, read, or check. A flow read is conditional: a linebacker who fills inside must have an answer before the pull. A lone edge pass blitz can use the called EDGE exchange when Mike drops and the inside is clear. Edge plus Mike creates a local four-on-three overload; protect inside first and call the named hot route or change the protection.</p>
@@ -56,7 +56,7 @@ main{max-width:1600px}.controls{grid-template-columns:1.2fr 1fr 1fr auto;gap:24p
 (() => {
 'use strict';
 const plays = [
- {id:'20',name:'Center dive',kind:'dive',dir:0}, {id:'21',name:'HB dive',kind:'dive',dir:-1},
+ {id:'20',name:'Center dive',kind:'dive',dir:0}, {id:'21',name:'Inside zone',kind:'inside',dir:-1},
  {id:'22',name:'Inside zone',kind:'inside',dir:1}, {id:'23',name:'Outside zone',kind:'outside',dir:-1},
  {id:'24',name:'Outside zone',kind:'outside',dir:1}, {id:'25',name:'Stretch',kind:'stretch',dir:-1},
  {id:'26',name:'Stretch',kind:'stretch',dir:1},
@@ -208,8 +208,9 @@ function runAction(play){
 }
 function runRoute(play){
  const d=play.dir||1;
- const x=play.id==='20'?360:play.id==='21'?313:play.id==='22'?407:play.kind==='inside'?360+d*140:play.kind==='outside'?360+d*245:360+d*340;
- const path=play.id==='20'?'M360 500L360 280':['dive','inside'].includes(play.kind)?`M360 500Q${x} 435 ${x} 340L${x} 280`:`M360 500C${360+d*165} 500 ${x} 450 ${x} 340L${x} 280`;
+ const outsideGap=d>0?(ox.RG+ox.RT)/2:(ox.LG+ox.LT)/2;
+ const x=play.id==='20'?360:play.id==='21'?313:play.id==='22'?407:play.kind==='inside'?360+d*140:play.kind==='outside'?outsideGap:360+d*340;
+ const path=play.id==='20'?'M360 500L360 280':['dive','inside','outside'].includes(play.kind)?`M360 500Q${x} 435 ${x} 340L${x} 280`:`M360 500C${360+d*165} 500 ${x} 450 ${x} 340L${x} 280`;
  return {x,path};
 }
 function diagram(play,front,pressure,uid){
@@ -230,7 +231,7 @@ function diagram(play,front,pressure,uid){
   const x=b.pos==='HB'?s.rbX:ox[b.pos],y=b.pos==='HB'?488:329;
   let target=b.target?s.byId[b.target]:{x:360-d*280,y:270};
   let tx=target.x,ty=target.y+29;
-  if(uses[b.target]>1){seen[b.target]=(seen[b.target]||0)+1;tx+=(seen[b.target]===1?-12:12);}
+  if(uses[b.target]>1){seen[b.target]=(seen[b.target]||0)+1;tx+=(seen[b.target]===1?-12:12)*(pass?1:d);}
   if(b.pos==='HB'&&front==='34'){tx=target.x;ty=target.y+30;}
   const type=b.type,color=colors[type],dash=['read','back'].includes(type)?'stroke-dasharray="8 7"':'';
   const cy=b.pos==='HB'?390:285;
@@ -263,7 +264,7 @@ function diagram(play,front,pressure,uid){
  }
  if(s.pullStopped)out+=`<text x="360" y="409" text-anchor="middle" font-size="24" font-weight="750" fill="#bb433e">STAY + CALL · NO PULL</text>`;
  if(action){
-  for(const pos of positions){const x=ox[pos]-15;out+=`<path data-first-step="${pos}" d="M${x} 418 L${x+action.dx} ${418+action.dy}" fill="none" stroke="#117a68" stroke-width="3" marker-end="url(#${uid}-step)"/>`;}
+  for(const pos of positions){const x=ox[pos]+(action.dx<0?15:-15);out+=`<path data-first-step="${pos}" d="M${x} 418 L${x+action.dx} ${418+action.dy}" fill="none" stroke="#117a68" stroke-width="3" marker-end="url(#${uid}-step)"/>`;}
  }
  for(const p of s.defs){
   const m=p.id==='M',read=pass&&!s.rushers.includes(p.id),need=s.supportNeeds.find(n=>n.id===p.id),hot=s.hot.includes(p.id);
@@ -281,10 +282,10 @@ function keys(play,front){
  const dir=play.dir>0?'right':'left';
  if(play.kind==='pass')return ['Set back. Inside first.','Hold gap. Pass stunts.',front==='43'?'C: pick the middle blitz.':'C: block N first.'];
  if(play.id==='20')return ['Drive straight ahead.','Secure the block first.','HB: aim behind C.'];
- if(play.id==='21')return ['Drive straight ahead.','One helper takes M.','HB: aim between C and LG.'];
+ if(play.id==='21')return ['First step left.','Secure, then one climbs.','HB: aim between C and LG.'];
  if(play.id==='22')return ['First step right.','Secure, then one climbs.','HB: aim between C and RG.'];
  if(play.kind==='inside')return [`First step ${dir}.`,'Secure, then one climbs.','HB: press the inside gap.'];
- if(play.kind==='outside')return [`Step and reach ${dir}.`,'Keep your feet moving.','HB: aim outside the tackle.'];
+ if(play.kind==='outside')return [`Step and reach ${dir}.`,'Keep your feet moving.',`HB: between ${play.dir>0?'RG and RT':'LG and LT'}.`];
  return ['Backside guard pulls.','C + backside guard decide.','Center pulls.'];
 }
 function fitNotes(play,s){
